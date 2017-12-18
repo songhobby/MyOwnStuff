@@ -7,21 +7,23 @@
 #include <utility>
 using namespace std;
 
-#define KEY_LENGTH_MAX 1
+int const KEY_LENGTH_MAX = 1;
 
 int main(int argc, char const *argv[]) {
   ifstream ctext("ctext.txt");
-  stringstream ss;
-  unsigned char ch;
-  vector<int> c;
-  ss << hex << "f";
-  ss >> ch;
-  cout << static_cast<int>(ch) << endl;
-  c.emplace_back(ch);
+  char ch;
+  vector<unsigned char> c;
   map<char,int> m;
+  while (ctext.get(ch)) {
+    stringstream ss;
+    ss << ch;
+    int ch1;
+    ss >> hex >> ch1;
+    c.emplace_back(static_cast<unsigned char>(ch1));
+  }
   for (int i = 0; i < KEY_LENGTH_MAX; ++i) {
-    for (auto& x : c)
-    cout << x;
+    for (auto x : c)
+    cout << static_cast<int>(x);
   }
   cout << endl;
   ctext.close();
