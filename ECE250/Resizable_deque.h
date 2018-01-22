@@ -1,7 +1,7 @@
 /*****************************************
- * UW User ID:  uwuserid
+ * UW User ID:  20629096
  * Submitted for ECE 250
- * Semester of Submission:  (Winter|Spring|Fall) 20NN
+ * Semester of Submission:  Winter 2018
  *
  * By submitting this file, I affirm that
  * I am the author of all modifications to
