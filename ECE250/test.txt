@@ -1,0 +1,270 @@
+new
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_back 3
+push_front 10
+push_front 10
+push_front 10
+push_back 4
+pop_back 
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+cout
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_back
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+cout 
+clear
+cout
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+cout 
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+push_front 10
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pot_back
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+pop_front 
+cout 
