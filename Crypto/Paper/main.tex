@@ -187,6 +187,60 @@ In addition, one should always check if the r-value of a given signature is zero
 \paragraph{Arithmetically Unbiased k-Value}
 It happens that same ephemeral key was acturally used more than once in industry, which completely undermine the secrecy of this signature scheme as one can recover the underlying private key from the signatures generated using the same ephemeral key.
 Now the stronger statement is that even a slightly biased pseudorandom generator (certain kinds of bias) could be exploited to recover the underlying private key.
+So a pseudorandom generator to generate ephemeral keys is assumed here.
 
+\paragraph{The Generic Group Model}
+Consider $A=xG,B=yG$, Computing $x$ from $A,G$ is intractable and computing $xyG$ from $A,B,G$ is also intractable thought there might be some information leaked from $xy$ the multiplication of the exponents. This is formulated as Elliptic Cureve Diffie-Hellman Problem which no one ever found an efficient solution for. However, this problem might be solved or simplified by exploiting some group properties of certain elliptic group. For the purpose of proving ECDSA, it is reasonable to assume a generic model for the underlying elliptic curve group. More specifically, two operations are provided for any forger to invoke as well the the verifier, namely push and subtract command.\\
+\paragraph{Push Command}
+For any input $A$ denoted as $A_{m+1}\in \mathbb{A}_n$ in the $m+1$th invokation store the exponent $z_{m+1}+x_{m+1}\in_R\mathbb{Z}_n$ if $A_{m+1}$ is not among the $A_i$'s for $i=0,1,2,\cdots,m$ and do nothing if $A_{m+1}$ is among the $A_i$'sas to model the intractability of discrete logarithm. The initial two commands for the oracle would be used to construct the public and private key, so it requires that $A_0\neq G$ otherwise the private key would be trivial.
+\paragraph{Subtract}
+This command takes nothing but return the subtraction $z_{m+1}=z_{m-1}-z_m$ of the two previous exponents pushed. If $A_{m+1}=z_{m+1}G$ is among the elements already stored, return the corresponding exponent. Otherwise randomly select $A_{m+1} \in _R \mathbb{A}_n$.
+\paragraph{The Signing Oracle or Hint Command}
+In order to model the signing operation, one assumes that the message signature pair reveals absolute nothing about the underlying private key. So the pairs of message and signature is just random pairs with no correlation. So given message $M_{m+1}$, the signing oracle randomly pick a group element $A_{m+1}\in _R\mathbb{A}_n$ as a result of imitating a random hash fucntion.
+Then it randomly picks a exponent $z_{m_1}\in _R\mathbb{Z}_n$ so that in princple no information is revealed from a pair of message and signature signed by the true signer. But if $z_{m_1}$ already exists in the memory (or exists in the previous state) the signing oracle simply returns that exponent to preserve consistency.\\
+In the generic group model, hash signature pairs $(A_i,z_i)$ are divided into two groups with the basic ones resulting from a push command and derived ones from else where. By using linear algebra, one can obtain a derived signature from basic ones by solving the corresponding coefficients. But this conincidence happens with neglegible probability.
 
+\section{Sufficient Security Conditions}
+\paragraph{Existential Unforgeability against No-Message Attacks}
+Suppose F is an $(\epsilon_F,\tau_F,0)$-forger in the generic model. The following is the reduction to an inverter or zero finder (I) using F as a subroutine.\\
+Input: e (a randomly selected hash value)\\
+(1) Invoke F with a simulated oracle\\
+(2) Obtain the result from the forger namely the signature (r,s)\\
+(3) Verify the signature using the simulated oracle\\
+Output:  a message M such that h(M)=e or h(M)=0.\\
+Since one can build a simulated oracle which is indistinguishable from the generic push and subtract operations, such forger could then be used to buld an Inverter or Zero-finder which contradicts the assumption of the hash function.
+The Theorem says:
+\paragraph{Theorem 1} 
+If F is an $(\epsilon_F,\tau_F,0)$ forger of ECDSA with hash function h and an almost-invertible conversion function f in the generic model for $\mathbb{A}_n$, 
+then there exists an $(\epsilon_I,\tau_I)$-inverter and $(\epsilon_Z,\tau_Z)$-zero-finder for h with
+\begin{equation*}
+\epsilon_I+\frac{\epsilon_Z}{10\tau_F} \ge \frac{\epsilon_F}{10\tau_F} - \frac{\tau_F}{20n},\tau_I,\tau_Z \le 2\tau_F
+\begin{equation*}
+
+\paragraph{Selective Unforgeability against Adaptive Chosen-Message Attacks}
+Algorithm of reduction to second-preimage-finder from such a forger F\\
+(1). Run the usual oracle for $\mathbb{A}_n$ with some esceptions which the signing oracle might throw.\\
+(2). To answer a signing queries of F during command i for a message $M$, do it as specified in the previous section. Basically the signing oracle randomly throw some pairs of hash value and signature, which the forger could essentially produces by itself.
+
+\paragraph{Theorem 2} If F is an $(\epsilon_F,\tau_F,q_F)$ forger of ECDSA on any message space $\mathsrc{F}$ with hash function h and an almost-invertible conversion function f of strength at least $\beta$ in the generic model for $\mathbb{A}_n$, 
+then there exists an $(\epsilon_S,\tau_S,\mathscr{F})$-second-preimage-finder $S$ and $(\epsilon_Z,\tau_Z)$-zero-finder $Z_h$ where 
+\begin{equation*}
+\epsilon_S \ge \epsilon_F - \frac{\tau_F^2}{2n} - (\frac{1}{\tau_F}-\frac{1}{n})^{-1}\beta, \tau_S \le 2\tau_F
+\end{equation*}
+
+\paragraph{Existential Unforgeability Against Adaptive Chosen-Ciphertext Attacks}
+The intuit idea behind this theorem is that one can build a simulated signing oracle which is in distinguishable from a generic model. The simulated oracle use the random hash oracle to generate hash value and the signing oracle mentioned in the building block section to answer the signing queries.
+\paragraph{Theorem 3}
+If there exists an $(\epsilon_F,\tau_F,q_F)$-forger $F_h$ of ECDSA with uniform random hash function h and an almost-invertible conversion function for the generic group model. Then there exists an $(\epsilon_C,\tau_C)$-collision-finder $C_h$ and $(\epsilon_Z,\tau_Z)$-zero-finder where
+\begin{equation*}
+\epsilon_C+\epsion_Z \ge \epsion_F -\frac{\tau_F^2}{2n}, \tau_C,\tau_Z \le 2\tau_F
+\end{equation*}
+\section{Conclusion}
+Up till now, the discrete logarithm problem 
+defined on elliptic curve over finite field is the hardest in the sense that the fastest algorithm to solve ECDLP is fully exponential time in contrast to the DLP in a finite field which could be 
+solved in sub-exponential time using Number Field Sieve. 
+Therefore, basing the signature scheme on such group give some evidece for the assumption of generic group model.
+Since there have been some weaknesses found in SHA-1 as used in the original paper, SHA-2 would be recommended for practical implementations to account for the assumption of collision-resistancy and uniformity which together implies preimage resistancey.. 
+Overall, the ECDSA is a provably secure digital signature scheme assuming (i) uniform and collision-resistant hash function. (ii)pseudorandomness for the generation of ephemeral private keys
+(iii) generic model of the underlying goup on elliptic curve defined over finite field. (iv) some constraints on the mapping from ephemeral public key space to private key space.
 \end{document}
