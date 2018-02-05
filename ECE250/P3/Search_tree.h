@@ -481,7 +481,7 @@ typename Search_tree<Type>::Iterator &Search_tree<Type>::Iterator::operator++() 
 	// If we are already at end do nothing
 
 	// Your implementation here, do not change the return value
-	if (current_node != containing_tree->back_sentinel) {
+	if (current_node != nullptr) {
 		current_node = current_node->next_node;
 	}
 
@@ -494,7 +494,7 @@ typename Search_tree<Type>::Iterator &Search_tree<Type>::Iterator::operator--() 
 	// If we are already at either rend, do nothing
 
 	// Your implementation here, do not change the returno value
-	if (current_node != containing_tree->front_sentinel) {
+	if (current_node != nullptr) {
 		current_node = current_node->previous_node;
 
 	return *this;
