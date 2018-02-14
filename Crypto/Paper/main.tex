@@ -1,7 +1,7 @@
 \title{\textbf{Provable Security of Elliptic Curve Digital Signature Algorithm (ECDSA)}}
 \author{ Haobei Song \\ 20629096 \\ University of Waterloo }
 \date{\today}
-\documentclass[12]{article}
+\documentclass[18]{article}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
@@ -12,6 +12,7 @@
 
 \begin{abstract}
 Daniel and  Brown proved the security of Elliptic Curve Digital Signature Algorithm (ECDSA) against adaptive chosen-message attacks with four weaker sufficient assumptions compared to previous work. Namely (i) The hash function must be uniform and collision-resistant. (ii) The ephemeral private key generator is a pseudorandom generator. (iii) The underlying elliptic curve group used here is considered to be a generic group so the special group properties per se are not exploited by the adversaries. (iv) The family of functions mapping ephemeral public keys to private keys is further constrained.
+\cite{Brown2005}
 \end{abstract}
 
 \section{Introduction}
@@ -19,42 +20,42 @@ Before this paper was introduced, there was no formal mathematical proof for ECD
 
 \section{Definitions}
 \subsection{Signature Scheme}
-A signature scheme is a triple of polytime probabilistic algorithems (PPT)
+A signature scheme is a triple of polytime probabilistic algorithms (PPT)
 $\Sigma=(K,G,V)$, and they are key generation, signature generation and signature verification respectively. K is given the security parameter n
 and generates a public key Y and private key x.
 G is the signer which given private key x and an arbitrary plaintext message m, outputs a signature S. The verifier V can,
 given public key Y, plaintext message m and signature S, accept or reject the signature.
-A correct signature scheme should always have that the verifier can accept a signature signed by the true signer with failure rate neglegible and reject a forged signature with success probability neglegible.
+A correct signature scheme should always have that the verifier can accept a signature signed by the true signer with failure rate negligible and reject a forged signature with success probability negligible.
 \subsection{Forger}
 A forger of a signature scheme $\Sigma=(K,G,V)$ is a PPT F, which given public key Y, a signature S and an internal state X, output a message m, state X and a signature R or a request, also denoted as R for a signature of a message $m_i$. \\
 
 A forger game for a specific forger F is a game consisting of counterplay of the following:\\
 Initially, the signer calls K to output a public key which is revealed to the forger and a private key x which it keeps secret.\\
-The forger (which knows the public key Y) starts from an initial state $X_0$ and output a message $m_i$, a state $X_i$ and $R_i$ a signture or a request for signature.\\
+The forger (which knows the public key Y) starts from an initial state $X_0$ and output a message $m_i$, a state $X_i$ and $R_i$ a signature or a request for signature.\\
 For $i \ge 1$. If $R_i$ is a request for a signature, then the signer correctly sign the message $m_i$ and call the forger with input the signature $S_i$ for $m_i$ and the state of the forger $X_i$. If $R_i$ is a signature, then the forger outputs the signature and the game is over.\\
 An additional constraint is that when the game ends the message for which the forger forge the signature for was not queried to the signer. Otherwise this forger would not be useful. \\
 A signature scheme $\Sigma$ is (p,Q,t) secure if it does not have a (p,Q,t) forger which could win the forger game in at most Q rounds performing t computations with probability at least p. When Q equals 0 the forger is said to be passive and active otherwise. A selective forger is in addition given a message to be signed before the forger game starts and only succeed until the forger correctly forges a signature for such message which of course is not queried to the signer. In contrast the forger defined previously is called an existential forger.\\
-\paragraph{Signature Security} A signature scheme is (p,Q,t)-secure aganist an existential forgery if there exists no (p,Q,t)-forger and is (p,Q,t,U)-secure aganist a selective forgery if there exists no (p,Q,t,U)-selective forger where U is a PPT algorithm to generate the initial selective message(challenge message) to be forged. Since a selective forger is more harmful in the sense that a signature scheme breakable by a selective forger also fails existential forger test in the straight forward way.
+\paragraph{Signature Security} A signature scheme is (p,Q,t)-secure against an existential forgery if there exists no (p,Q,t)-forger and is (p,Q,t,U)-secure against a selective forgery if there exists no (p,Q,t,U)-selective forger where U is a PPT algorithm to generate the initial selective message(challenge message) to be forged. Since a selective forger is more harmful in the sense that a signature scheme breakable by a selective forger also fails existential forger test in the  way.
 
 \paragraph{ECDSA}
 Elliptic Curve Digital Signature Algorithm or ECDSA is a tuple $\Sigma=(K,G,V)$ of Key Generation, Signature Generation and Signature Verification algorithms which are all polytime probabilistic algorithms (PPT).
 Start from the construction of the underlying group ECDSA is built on.
 n is a prime number of certain bit-length defined by a security parameter.
 $\mathbb{A}_n$ is a subgroup of an elliptic curve group defined over a finite field with a generator denoted as G of order n.
-Such an elliptic curve group can be generated effiently with the above requirements satisfied.
+Such an elliptic curve group can be generated efficiently with the above requirements satisfied.
 The conversion function is just $\mathbf{x}$ which returns the x-coordinate of a point on elliptic curve or more formally:
 
 \begin{equation*}
 f: \mathbb{A}_n \to \mathbb{Z}_n.
 \end{equation*}
 A hash function is $h:\{0,1\}^* \to \mathbb{Z}_n$ with more details in the rest of the paper.\\
-\paragraph{Key Generation}: A private key is an integer $d\in _R \mathbb{Z}_n \backslash \{0\}$ generated by a pseudorandom genrator.
+\paragraph{Key Generation}: A private key is an integer $d\in _R \mathbb{Z}_n \backslash \{0\}$ generated by a pseudorandom generator.
 The corresponding public key is just $Q=dG$ which could be computed efficiently in the means of double and add.
 \paragraph{Signature Generation}
 For a given message M in the message space $\{0,1\}^*$, firstly select a ephemeral key $k\in_R \mathbb{Z}_n$ by a pseudorandom generator and compute $R=kG$. \\
-Call the conversion function to compute $r=\mathbf{x}(R)$. If this returns 0 go back to step 1. Since $\mathbf{x}$ returns zero with neglegible probability, this should not be a concern in practice.\\
-Then compute the hash of the plaintext message M to abtain $e=h(M)$. Compute $s=k^{-1}(e+dr) \bmod n$. Similarly, there is a chance that s is zero, Bfut as long as the hash function and pseudorandom generators behave as they are supposed to,
-this only happens with a neglegible probability. The signature on M is $(r,s)$
+Call the conversion function to compute $r=\mathbf{x}(R)$. If this returns 0 go back to step 1. Since $\mathbf{x}$ returns zero with negligible probability, this should not be a concern in practice.\\
+Then compute the hash of the plaintext message M to obtain $e=h(M)$. Compute $s=k^{-1}(e+dr) \bmod n$. Similarly, there is a chance that s is zero, But as long as the hash function and pseudorandom generators behave as they are supposed to,
+this only happens with a negligible probability. The signature on M is $(r,s)$
 \paragraph{Signature Verification}
 To verify a signature $(r,s)$ on a plaintext message $M$ with public key Q, group $\mathbb{A}_n$ and generator of the group $G$. First check the syntax of the signature and that $r,s \in \mathbb{Z}_n$. Then return ACCEPT if
 \begin{equation*}
@@ -77,12 +78,12 @@ Normally $\mathbb{G}$ is defined in such a way in which
  to ensure every group element has a discrete logarithm solution.
 The Nechaev-Shoup generic model of a group is such a group without
  any other structural properties to be potentially exploited.
- In a genric goup, the group operation can only be performed by a oracle
+ In a generic group, the group operation can only be performed by a oracle
  and the group operation is in some sense random subject
  to the given group operations. In a nutshell, a generic group is a group with a back-box like group operation.
  However this is unachievable for any efficient groups.
-  Such a group as a Nechaev-Shoup generic model is also named a \textit{secure group} of strength $|G|/2$. $|G|/2$ comes from the fact that Pollard-$\rho$-algorithm could find the logarithm solution with probability $\sqrt{\frac{\pi}{2|G|}}$ by birthday parodox.\\
-  The secure group $\mathbb{A}_n$ used in ECDSA is a group of order n generated by points on an elliptic courve over a finite field $\mathbb{F}_q$.
+  Such a group as a Nechaev-Shoup generic model is also named a \textit{secure group} of strength $|G|/2$. $|G|/2$ comes from the fact that Pollard-$\rho$-algorithm could find the logarithm solution with probability $\sqrt{\frac{\pi}{2|G|}}$ by birthday paradox.\\
+  The secure group $\mathbb{A}_n$ used in ECDSA is a group of order n generated by points on an elliptic curve over a finite field $\mathbb{F}_q$.
   Depending on the parity of q, the implementation might differ nontrivially.
 
 \subsection{Conversion Functions}
@@ -116,7 +117,7 @@ The conversion function for ECDSA is just the x-coordinate of points on the elli
 f: G \in \mathbb{A}_n, \to \mathbf{x}(G) \bmod m
 \end{equation*}
 Given $z \in \mathbb{Z}_n$, the inverse of z can be calculated as following.
-First find $x$ in $\mathbb{F}_q$ such that $x \equiv z \pmod{m}$ and $x$ is the x-coordinate of some points on the elliptic curve. Then solve the elliptic equation to recover the y-coordinate (there are two y-coordinates correspondin g to the same x-coordinate so one might need to send an extra bit to differentiate them).
+First find $x$ in $\mathbb{F}_q$ such that $x \equiv z \pmod{m}$ and $x$ is the x-coordinate of some points on the elliptic curve. Then solve the elliptic equation to recover the y-coordinate (there are two y-coordinates corresponding to the same x-coordinate so one might need to send an extra bit to differentiate them).
 This method could find the inverse with probability at least 1/8 of the standard implementation in ECDSA. Thus f is almost-inverse which implies f is almost-invertible as well.
 $x \in $
 
@@ -140,18 +141,18 @@ A hash function is said to be second-preimage resistant if no such second-image-
 \paragraph{Collision-Resistant}
 A $(\epsilon, \tau)$-collision finder PPT is $C$ such that within running time at most $\tau$ $S$ outputs two different messages with the same hash value with probability at least $\epsilon$. And a hash function is collision-resistant if no such collision finders exist.
 \paragraph{Zero-Finder-Resistant}
-A hash function h is said to be $(\epsilon, \tau)$ zero-finder-resistant if no PPT algorithm can find a message M with $h(M)=0$ wihin
+A hash function h is said to be $(\epsilon, \tau)$ zero-finder-resistant if no PPT algorithm can find a message M with $h(M)=0$ within
 $\tau$ and have a success probability greater than $\epsilon$
 \paragraph{Zero-Rarity}
 A hash function is zero-rare of strength $(\epsilon, \mathscr{F})$ if for $M\in _R \mathscr{F}$, the probability that $h(M)=0$ is at most $\epsilon$.
 \\ Zero-finder-resistant implies zero-rarity as otherwise one can always try exhaustive search to find enough messages having hash value zero assuming zero-rarity is not true.
-\\ I personally don't understant why the auther mentioned zero-finder-resistant and zero-rarity here. The ECDSA or ECD only fails when the hash value equils zero with neglegible probability.
+\\ I personally don't understand why the author mentioned zero-finder-resistant and zero-rarity here. The ECDSA or ECD only fails when the hash value equals zero with negligible probability.
 
 
 \paragraph{Uniform Hash Function}
 A uniform hash function is that no PPT algorithm could differentiate the hash function from a true uniformly random function defined on the same domain and range with probability significantly greater than one half.\\
 
-As an important note, uniformity and collision-resistancy together implies preimage resistant but not the opposite way.
+As an important note, uniformity and collision-resistance together implies preimage resistant but not the opposite way.
 \paragraph{Pseudorandom Generators}
 Though pseudorandomness was not mentioned in the original paper in more detail, here is an overview of it. A pseudorandom generator is a random number generator which every time is called with a seed of bit-length n, produces a number x of bit-length m (with $m > n$, or more accurate m is a polynomial of n) such that no PPT algorithms exist which could differentiate it from a random number sampled from a true uniform distribution (the range of the random numbers should agree).
 
@@ -167,38 +168,38 @@ $(\epsilon, 1, 0, \mathscr{F})$-forger for any message distribution $\mathscr{F}
 \end{align*}
 This would succeed with probability $\epsilon$ as the conversion function is $\epsilon$-clustered.
 
-\paragraph{Preimage Resistancy}
-Suppost there exist in inverter $\mathscr{V}$ of strength $(\epsilon_V, \tau_V)$ of the hash function h. Since with a selected e
+\paragraph{Preimage Resistance}
+Suppose there exist in inverter $\mathscr{V}$ of strength $(\epsilon_V, \tau_V)$ of the hash function h. Since with a selected e
 \begin{align*}
 f(s^{-1}eG+s^{-1}rQ) &= f(aG+bQ) \text{ with } a=s^{-1}e, b=s^{-1}r \\
 r=f(aG+bQ), e&=ab^{-1}r,  s\prime = rb^{-1}\\
 \textbf{Output: }&(r,s\prime) \text{ on } M=\mathscr{V}(e)
 \end{align*}
 The probability that with arbitrarily selected a and b the computed hash value e falls in the range of the hash function is $|\mathscr{H}|/n$. Thus the probability that the above forger succeeds is $\epsilon_V|\mathscr{H}|/n$
-\paragraph{Collistion-Resistant Hash}
-If not, invoke the collison-finder to find two message $M'$ and $M$ such that $h(M)=h(M')$. Then make a query to the signing oracle to get a signature on $M$. This signature is also a valid signature for $M'$. Therefore, there exists an existential forger which succeeds with probability the same as the success probabiltiy of the second-preimage-finder.
+\paragraph{Collision-Resistant Hash}
+If not, invoke the collision-finder to find two message $M'$ and $M$ such that $h(M)=h(M')$. Then make a query to the signing oracle to get a signature on $M$. This signature is also a valid signature for $M'$. Therefore, there exists an existential forger which succeeds with probability the same as the success probability of the second-preimage-finder.
 \paragraph{Second-Preimage-Resistant Hash}
 The same forger for the non-Collision-Resistant hash can break the scheme with the difference being that with a second-preimage-finder, one can find a collision for this specific message and produces the signature as the one queried from the signing oracle on the message that has the same hash value.
 This forger is a selective forger so it is more harmful if one abandons this requirement for a hash function.
-\paragraph{Zero-Finder-Resistant Hash} The argument for this property of hash function is similar to the argument for preimage resistancy. Set the a in the argument for preimage resistancy to 0 and the same proof works here.\\
+\paragraph{Zero-Finder-Resistant Hash} The argument for this property of hash function is similar to the argument for preimage resistance. Set the a in the argument for preimage resistance to 0 and the same proof works here.\\
 
 In addition, one should always check if the r-value of a given signature is zero, otherwise the above existential forger turns into a selective-forger.
 
 \paragraph{Arithmetically Unbiased k-Value}
-It happens that same ephemeral key was acturally used more than once in industry, which completely undermine the secrecy of this signature scheme as one can recover the underlying private key from the signatures generated using the same ephemeral key.
+It happens that same ephemeral key was actually used more than once in industry, which completely undermine the secrecy of this signature scheme as one can recover the underlying private key from the signatures generated using the same ephemeral key.
 Now the stronger statement is that even a slightly biased pseudorandom generator (certain kinds of bias) could be exploited to recover the underlying private key.
 So a pseudorandom generator to generate ephemeral keys is assumed here.
 
 \paragraph{The Generic Group Model}
-Consider $A=xG,B=yG$, Computing $x$ from $A,G$ is intractable and computing $xyG$ from $A,B,G$ is also intractable thought there might be some information leaked from $xy$ the multiplication of the exponents. This is formulated as Elliptic Cureve Diffie-Hellman Problem which no one ever found an efficient solution for. However, this problem might be solved or simplified by exploiting some group properties of certain elliptic group. For the purpose of proving ECDSA, it is reasonable to assume a generic model for the underlying elliptic curve group. More specifically, two operations are provided for any forger to invoke as well the the verifier, namely push and subtract command.\\
+Consider $A=xG,B=yG$, Computing $x$ from $A,G$ is intractable and computing $xyG$ from $A,B,G$ is also intractable thought there might be some information leaked from $xy$ the multiplication of the exponents. This is formulated as Elliptic Curve Diffie-Hellman Problem which no one ever found an efficient solution for. However, this problem might be solved or simplified by exploiting some group properties of certain elliptic group. For the purpose of proving ECDSA, it is reasonable to assume a generic model for the underlying elliptic curve group. More specifically, two operations are provided for any forger to invoke as well the the verifier, namely push and subtract command.\\
 \paragraph{Push Command}
-For any input $A$ denoted as $A_{m+1}\in \mathbb{A}_n$ in the $m+1$th invokation store the exponent $z_{m+1}+x_{m+1}\in_R\mathbb{Z}_n$ if $A_{m+1}$ is not among the $A_i$'s for $i=0,1,2,\cdots,m$ and do nothing if $A_{m+1}$ is among the $A_i$'sas to model the intractability of discrete logarithm. The initial two commands for the oracle would be used to construct the public and private key, so it requires that $A_0\neq G$ otherwise the private key would be trivial.
+For any input $A$ denoted as $A_{m+1}\in \mathbb{A}_n$ in the $m+1$th invocation store the exponent $z_{m+1}+x_{m+1}\in_R\mathbb{Z}_n$ if $A_{m+1}$ is not among the $A_i$'s for $i=0,1,2,\cdots,m$ and do nothing if $A_{m+1}$ is among the $A_i$'sas to model the intractability of discrete logarithm. The initial two commands for the oracle would be used to construct the public and private key, so it requires that $A_0\neq G$ otherwise the private key would be trivial.
 \paragraph{Subtract}
 This command takes nothing but return the subtraction $z_{m+1}=z_{m-1}-z_m$ of the two previous exponents pushed. If $A_{m+1}=z_{m+1}G$ is among the elements already stored, return the corresponding exponent. Otherwise randomly select $A_{m+1} \in _R \mathbb{A}_n$.
 \paragraph{The Signing Oracle or Hint Command}
-In order to model the signing operation, one assumes that the message signature pair reveals absolute nothing about the underlying private key. So the pairs of message and signature is just random pairs with no correlation. So given message $M_{m+1}$, the signing oracle randomly pick a group element $A_{m+1}\in _R\mathbb{A}_n$ as a result of imitating a random hash fucntion.
-Then it randomly picks a exponent $z_{m_1}\in _R\mathbb{Z}_n$ so that in princple no information is revealed from a pair of message and signature signed by the true signer. But if $z_{m_1}$ already exists in the memory (or exists in the previous state) the signing oracle simply returns that exponent to preserve consistency.\\
-In the generic group model, hash signature pairs $(A_i,z_i)$ are divided into two groups with the basic ones resulting from a push command and derived ones from else where. By using linear algebra, one can obtain a derived signature from basic ones by solving the corresponding coefficients. But this conincidence happens with neglegible probability.
+In order to model the signing operation, one assumes that the message signature pair reveals absolute nothing about the underlying private key. So the pairs of message and signature is just random pairs with no correlation. So given message $M_{m+1}$, the signing oracle randomly pick a group element $A_{m+1}\in _R\mathbb{A}_n$ as a result of imitating a random hash function.
+Then it randomly picks a exponent $z_{m_1}\in _R\mathbb{Z}_n$ so that in principle no information is revealed from a pair of message and signature signed by the true signer. But if $z_{m_1}$ already exists in the memory (or exists in the previous state) the signing oracle simply returns that exponent to preserve consistency.\\
+In the generic group model, hash signature pairs $(A_i,z_i)$ are divided into two groups with the basic ones resulting from a push command and derived ones from elsewhere. By using linear algebra, one can obtain a derived signature from basic ones by solving the corresponding coefficients. But this coincidence happens with negligible probability.
 
 \section{Sufficient Security Conditions}
 \paragraph{Existential Unforgeability against No-Message Attacks}
@@ -208,39 +209,43 @@ Input: e (a randomly selected hash value)\\
 (2) Obtain the result from the forger namely the signature (r,s)\\
 (3) Verify the signature using the simulated oracle\\
 Output:  a message M such that h(M)=e or h(M)=0.\\
-Since one can build a simulated oracle which is indistinguishable from the generic push and subtract operations, such forger could then be used to buld an Inverter or Zero-finder which contradicts the assumption of the hash function.
+Since one can build a simulated oracle which is indistinguishable from the generic push and subtract operations, such forger could then be used to build an Inverter or Zero-finder which contradicts the assumption of the hash function.
 The Theorem says:
-\paragraph{Theorem 1} 
-If F is an $(\epsilon_F,\tau_F,0)$ forger of ECDSA with hash function h and an almost-invertible conversion function f in the generic model for $\mathbb{A}_n$, 
+\paragraph{Theorem 1}
+If F is an $(\epsilon_F,\tau_F,0)$ forger of ECDSA with hash function h and an almost-invertible conversion function f in the generic model for $\mathbb{A}_n$,
 then there exists an $(\epsilon_I,\tau_I)$-inverter and $(\epsilon_Z,\tau_Z)$-zero-finder for h with
 \begin{equation*}
 \epsilon_I+\frac{\epsilon_Z}{10\tau_F} \ge \frac{\epsilon_F}{10\tau_F} - \frac{\tau_F}{20n},\tau_I,\tau_Z \le 2\tau_F
-\begin{equation*}
+\end{equation*}
 
 \paragraph{Selective Unforgeability against Adaptive Chosen-Message Attacks}
 Algorithm of reduction to second-preimage-finder from such a forger F\\
-(1). Run the usual oracle for $\mathbb{A}_n$ with some esceptions which the signing oracle might throw.\\
+(1). Run the usual oracle for $\mathbb{A}_n$ with some exceptions which the signing oracle might throw.\\
 (2). To answer a signing queries of F during command i for a message $M$, do it as specified in the previous section. Basically the signing oracle randomly throw some pairs of hash value and signature, which the forger could essentially produces by itself.
 
-\paragraph{Theorem 2} If F is an $(\epsilon_F,\tau_F,q_F)$ forger of ECDSA on any message space $\mathsrc{F}$ with hash function h and an almost-invertible conversion function f of strength at least $\beta$ in the generic model for $\mathbb{A}_n$, 
-then there exists an $(\epsilon_S,\tau_S,\mathscr{F})$-second-preimage-finder $S$ and $(\epsilon_Z,\tau_Z)$-zero-finder $Z_h$ where 
+\paragraph{Theorem 2} If F is an $(\epsilon_F,\tau_F,q_F)$ forger of ECDSA on any message space $\mathscr{F}$ with hash function h and an almost-invertible conversion function f of strength at least $\beta$ in the generic model for $\mathbb{A}_n$,
+then there exists an $(\epsilon_S,\tau_S,\mathscr{F})$-second-preimage-finder $S$ and $(\epsilon_Z,\tau_Z)$-zero-finder $Z_h$ where
 \begin{equation*}
 \epsilon_S \ge \epsilon_F - \frac{\tau_F^2}{2n} - (\frac{1}{\tau_F}-\frac{1}{n})^{-1}\beta, \tau_S \le 2\tau_F
 \end{equation*}
 
 \paragraph{Existential Unforgeability Against Adaptive Chosen-Ciphertext Attacks}
-The intuit idea behind this theorem is that one can build a simulated signing oracle which is in distinguishable from a generic model. The simulated oracle use the random hash oracle to generate hash value and the signing oracle mentioned in the building block section to answer the signing queries.
+The intuit idea behind this theorem is that one can build a simulated signing oracle which is indistinguishable from a generic model. The simulated oracle use the random hash oracle to generate hash value and the signing oracle mentioned in the building block section to answer the signing queries.
 \paragraph{Theorem 3}
 If there exists an $(\epsilon_F,\tau_F,q_F)$-forger $F_h$ of ECDSA with uniform random hash function h and an almost-invertible conversion function for the generic group model. Then there exists an $(\epsilon_C,\tau_C)$-collision-finder $C_h$ and $(\epsilon_Z,\tau_Z)$-zero-finder where
 \begin{equation*}
-\epsilon_C+\epsion_Z \ge \epsion_F -\frac{\tau_F^2}{2n}, \tau_C,\tau_Z \le 2\tau_F
+\epsilon_C+\epsilon_Z \ge \epsilon_F -\frac{\tau_F^2}{2n}, \tau_C,\tau_Z \le 2\tau_F
 \end{equation*}
 \section{Conclusion}
-Up till now, the discrete logarithm problem 
-defined on elliptic curve over finite field is the hardest in the sense that the fastest algorithm to solve ECDLP is fully exponential time in contrast to the DLP in a finite field which could be 
-solved in sub-exponential time using Number Field Sieve. 
-Therefore, basing the signature scheme on such group give some evidece for the assumption of generic group model.
-Since there have been some weaknesses found in SHA-1 as used in the original paper, SHA-2 would be recommended for practical implementations to account for the assumption of collision-resistancy and uniformity which together implies preimage resistancey.. 
+Up till now, the discrete logarithm problem
+defined on elliptic curve over finite field is the hardest in the sense that the fastest algorithm to solve ECDLP is fully exponential time in contrast to the DLP in a finite field which could be
+solved in sub-exponential time using Baby-step-giant-step. This method essentially only invokes group operations as a black-box as treated by a generic group.
+Therefore, basing the signature scheme on such group give some evidence for the assumption of generic group model.
+Since there have been some weaknesses found in SHA-1 as used in the original paper, SHA-2 would be recommended for practical implementations to account for the assumption of collision-resistance and uniformity which together implies preimage resistance as well.
 Overall, the ECDSA is a provably secure digital signature scheme assuming (i) uniform and collision-resistant hash function. (ii)pseudorandomness for the generation of ephemeral private keys
-(iii) generic model of the underlying goup on elliptic curve defined over finite field. (iv) some constraints on the mapping from ephemeral public key space to private key space.
+(iii) generic model of the underlying group on elliptic curve defined over finite field. (iv) some constraints on the mapping from ephemeral public key space to private key space.
+
+\newpage
+\bibliographystyle{abbrv}
+\bibliography{author}
 \end{document}

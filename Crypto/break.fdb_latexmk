@@ -1,9 +1,0 @@
-# Fdb version 3
-["pdflatex"] 1517112088 "break.cc" "break.pdf" "break" 1517112088
-  "/usr/share/texmf-dist/web2c/texmf.cnf" 1510784374 32585 d82bbcf7626b7842c87671687479e852 ""
-  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1513573253 7736839 edda1702b5046ff8c15bbc1cfa8a5e7d ""
-  "break.aux" 1517112088 8 a94a2480d3289e625eea47cd1b285758 ""
-  "break.cc" 1516255101 613 a394d95de6106372f12c685a5a1e363f ""
-  (generated)
-  "break.log"
-  "break.pdf"

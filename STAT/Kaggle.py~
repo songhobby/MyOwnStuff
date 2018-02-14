@@ -1,0 +1,52 @@
+import pandas as pd
+import numpy as np
+
+train_df = pd.read_csv('/home/aaron/Project/MyOwnStuff/STAT/individual_data_train.csv')
+Class_df = np.array(train_df['Class'][1000])
+train_df = train_df.drop(['Class'], 1)
+Fnlwgt_df = train_df['Fnlwgt']
+Fnlwgt_df = np.array(Fnlwgt_df / Fnlwgt_df.max())
+test_df = pd.read_csv('/home/aaron/Project/MyOwnStuff/STAT/individual_data_test.csv')
+split_col = train_df.shape[0]
+grand_df = pd.get_dummies(pd.concat([train_df, test_df]).drop(['Education', 'Fnlwgt'], 1))
+train_df = np.array(grand_df[:1000])
+test_df = np.array(grand_df[split_col:])
+sample_df = pd.read_csv('/home/aaron/Project/MyOwnStuff/STAT/individual_data_sample_submission.csv')
+sample_df.head()
+
+print(train_df.shape,Class_df.shape)
+
+def Sigmoid(w,x):
+    return 1 / (1 + np.exp(-w.dot(x)))
+
+class LR():
+    def train(self, data, label, wgt, num_it):
+        data=np.insert(data,0,1,axis=1)
+        self.Weight = np.zeros(data.shape[1])
+        self.R=np.zeros([data.shape[0],data.shape[0]])
+        for i in range(num_it):
+            print("{} iteration".format(i))
+            L_1=0
+            for j in range(data.shape[0]):
+                L_1+=(Sigmoid(self.Weight,data[j])-label[j])*data[j]*wgt[j]
+                self.R[j][j]=Sigmoid(self.Weight,data[j])*(1-Sigmoid(self.Weight,data[j]))
+                H=np.matmul(np.matmul(data.transpose(),self.R),data)
+                self.Weight-=np.matmul(np.linalg.pinv(H),L_1)
+    def predict(self,x):
+        return (Sigmoid(self.Weight,x) > 0.5)
+    def test(self,data,label):
+        data=np.insert(data,0,1,axis=1)
+        return np.sum(np.equal(np.apply_along_axis(self.predict,1,data),label))/data.shape[0]
+    def write(self,test):
+        test=np.insert(test,0,1,axis=1)
+        result = np.empty([test.shape[0],2],dtype=np.int32)
+        for i in range(result.shape[0]):
+            result[i][0]=i+1
+            result[i][1]=self.predict(test[i])
+        output=pd.DataFrame(data=result,columns=['id','Class'],dtype=np.int32)
+        output.to_csv("result.csv",index=False)
+
+L=LR()
+L.train(train_df, Class_df, Fnlwgt_df,10)
+L.test(train_df, Class_df)
+L.write(test_df)
