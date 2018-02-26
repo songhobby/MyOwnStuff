@@ -47,7 +47,7 @@ send an email to ajmeneze@uwaterloo.ca.
 \begin{enumerate}
 \item Is a preimage-resistant hash function necessarily second-preimage
 resistant? (Justify your answer.)
-\paragraph{Solution} No. Suppose H is a preimage-resistant hash function $H:\{0,1\}^* \to \{0,1\}^n$. Define $H':\{0,1\}^* \to \{0,1\}^n$ to be \\
+\paragraph{Solution} No. Suppose H is a uniform preimage-resistant hash function $H:\{0,1\}^* \to \{0,1\}^n$. Define $H':\{0,1\}^* \to \{0,1\}^n$ to be \\
 \[ H'(x)=
 \begin{cases}
 H(x), & \text{if x is even}\\
@@ -55,7 +55,7 @@ H(x+1), & \text{if x is odd}
 \end{cases}
 \]\\
 Given any $x\in \{0,1\}^*$, if x is even, then $x-1$ is a second-preimage as $H'(x-1)=H(x-1+1)=H(x)=H'(x)$. If x is odd, then $x+1$ is a second-preimage. So $H'$ is not second-preimaage resistant.\\
-Suppose $H'$ is not preimage-resistant. Given a randomly chosen hash value $h\in_R\{0,1\}^n$ produced by $H$, with probability at least 0.5 h has a preimage which is even. If so we can find its preimage $x'$ by invoking the preimage finding algorithm of $H'$, namely $x'$ s.t. $H'(x')=h$. Then $H(x')=H'(x')=h$. Since this 0.5 probability is not negligible, $H$ is not preimage-resistant. By contradiction, $H'$ is preimage-resistant.
+Suppose $H'$ is not preimage-resistant. Given a randomly chosen hash value $h\in_R\{0,1\}^n$ produced by $H$, with probability about 0.5 h has a preimage which is even (since h is uniform). If so we can find its preimage $x'$ by invoking the preimage finding algorithm of $H'$, namely $x'$ s.t. $H'(x')=h$. Then $H(x')=H'(x')=h$. Since this 0.5 probability is not negligible, $H$ is not preimage-resistant. By contradiction, $H'$ is preimage-resistant.
 
 \item Suppose that $H: \{0,1\}^* \rightarrow \{0,1\}^n$ is a collision-resistant
 hash function. Define a new hash function $G : \{0,1\}^* \rightarrow
@@ -117,9 +117,19 @@ can assume you know all the details of the cryptographic system except
 for the secret key chosen by Alice and Bob. So, in this problem, you
 can assume that you know the complete description of $f$ and $H$, but
 you do not know the secret key $k$.)
-\paragraph{Solution} 
+\paragraph{Solution}
 (a) is insecure. Chose a message M and call MAC oracle once to get $c=H(m)\oplus k$. Compute $h=H(M)$ and recover the key $k=c\oplus h$. For any message m, $MAC_k(m)=H(m)\oplus k$ where k is now known.\\
-(c) is insecure.
+(b) is insecure.
+(c) is insecure. For a message m, call the MAC oracle to get $c=H(k,m)\oplus H(m)$. Then $H(k,m)=c\oplus H(m)$ Append a single 1 bit to the right of m followed by enough 0's to make the bit-length of the resulting message $m'$ multiple of 128. Let b be the 128-bit binary representation of the number of 128-bit blocks.
+One can compute the hash value of $(k,m'||b||y)$ for any message $y$ (assume $y$ has bit length $128t$) as
+\[
+H(k,m'||b||y)=f(b+t,H_{l+1+t})\] \[ \text{where }H_{l+1+j}=f(y_j,H_{l+j}),
+H_{l+1}=H(m)=f(b,H_l), H_0=f(k,0), H_1=f(m_1,H_0)
+\]
+Thus, one can compute the tag for this new message $m'||b||y$
+\[
+MAC_k(m'||b||y)=H(k,m'||b||y)\oplus H(m'||b||y)
+\]
 
 \newpage
 %*************************************************************************
@@ -129,6 +139,15 @@ determines whether $n$ is an integer fifth power; that is, your algorithm
 should determine if there exists an integer $a \in \NN$ such that $n
 = a^5$.  ($\NN$ is the set of natural numbers.) Using big-O notation,
 give an upper bound on the number of bit operations your algorithm takes.
+\paragraph{Solution}
+(1) down=0, up=n. Compute $mid=\floor{\frac{down+up}{2}}$
+(2) if $down == up$, Output FALSE;
+    else if $mid^5 > n$, up=mid;
+    else if $mid^5 < n$, down=mid;
+    else Output TRUE.
+    \\
+This algorithm takes at most $log_2n$ steps till it returns, so the running time is bounded by $\lceil log_2n \rceil+1$. For each step, to compute $mid^5$ one can compute $mid^2$, $mid^4$, $mid^5$. This requires 3 multiplications and additionally for each step the algorithm does at most 3 comparisons, one addition and one full division. So the total runnint time is (bitlength is t) $O((t+1)(3t+(3+2)t^2+t+t^2))$ which is polynomial.
+
 
 %*************************************************************************
 \item {\bf RSA computations} (10 marks)\\
@@ -142,6 +161,35 @@ encryption scheme.
 perform the basic RSA operations. You may use a calculator, but please
 show the main steps of your calculations. If you write a computer program,
 please hand in the program.)
+\paragraph{Solution}
+$1073=29\times 37\\
+\Phi(1073)=28\times 36=1008\\
+1008=715\times 1 + 293\\
+715=293\times 2+129\\
+293=129\times 2 +35\\
+129=35\times 3+24\\
+35=24\times 1+11\\
+24=11\times 2 + 2\\
+11=2\times 5 + 1\\
+5=1\times 5\\
+547\times 715=388\times 1008+1\\
+\text{Thus } 715\times 547 \equiv 1 \pmod{1008}$\\
+(a)
+Therefore $547\times 715\equiv 1 \pmod{1008}$, 547 is the private key.
+\\
+(b) $c\equiv 17^{715}\equiv 17^(2^9+2^7+2^6+2^3+2^1+1)\equiv 853 \pmod{1073}$.
+For part b the python script for repeated square and multiply is as follows
+\begin{verbatim}
+lst="1011001011" # the binary representation of 715
+mult = 17
+result = 2
+for st in reversed(lst):
+    if (st=='1'):
+        result = (result * mult) % 1073
+    mult=mult**2 % 1073
+print (result)
+\end{verbatim}
+
 
 \end{enumerate}
 
