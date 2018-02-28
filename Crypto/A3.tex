@@ -66,6 +66,7 @@ collision resistant, then $H$ is not collision resistant.)
 \paragraph{Solution}
 Suppose G is not collision resistant. There then exists a collision finding algorithm $CF$ that outputs $x,y$ s.t. $G(x)=G(y)=H(H(x))=H(H(x))$. Compute $H(x),H(y)$. If $H(x) \neq H(y)$, then $H(x), H(y)$ is a collision since $H(H(x))=H(H(y))$; Otherwise $x, y$ is a collision. So there exists such a collision finding algorithm for H as well. Therefore G is collision-ressistant if H is collision-ressistant.
 \end{enumerate}
+\newpage
 
 
 %*************************************************************************
@@ -83,6 +84,7 @@ $m_1,m_2,\ldots,m_D$ such that $H(m_1)=H(m_2)=\cdots=H(m_D)$.
 Invoke A to find d distinct pairs $(s_i,t_i),i=1,2,\dots,d$ such that $s_i \neq t_i, s_i \neq t_j$ if $i\neq j$ and $f(H_{i-1},s_i)=f(H_{i-1},t_i)$ where $H_{i-1}=f(H_{i-2},s_{i-1})=f(H_{i-2},t_{i-1})$ for $i > 1$ and $H_0$ is an arbitrarily chosen n-bit binary string. Let $k$ be a d-bit binary string and $k_i$ is the $i$th bit of $k$. Construct string $M_k$ by concatenating d s-bit binary strings where the $i$th block is $s_i$ if $k_i$ is 0 and $t_i$ if $k_i$ is 1. There are in total $2^d$ different messages as k varies from $0^d$ to $1^d$.
 Since $f(H_0,M_{k1})=f(H_0,M_{k'1})=f(H_0,s_1)=f(H_0,t_1)$ and $f(H_{i-1},M_{ki})=f(H_{i-1},M_{k'i})=f(H_{i-1},s_i)=f(H_{i-1},t_i)$ where $k\neq k'$ and $M_{ki}$ is the $i$th block of $M_k$, $H_d=f(H_{d-1},M_{kd})$ is equal to $f(H_{d-1},M_{kd})$. The length block $b$ for both messages $M_k$ and $M_k'$ are of the same, so the final result $H(M_k) = f(H_d,b) = H(M_k')$
 
+\newpage
 %*************************************************************************
 \item {\bf MAC schemes derived from hash functions} (10 marks)\\
 Let $f : \{0,1\}^{256} \rightarrow \{0,1\}^{128}$ be a compression function.
@@ -114,12 +116,11 @@ few hash function evaluations as you can, and use as few calls to the
 MACing oracle as you can.)\\
 (Note: As with all cryptographic systems considered in the course, you
 can assume you know all the details of the cryptographic system except
-for the secret key chosen by Alice and Bob. So, in this problem, you
+for the secret key chosen by Alice and Bob. So, in thisjjkk problem, you
 can assume that you know the complete description of $f$ and $H$, but
 you do not know the secret key $k$.)
 \paragraph{Solution}
-(a) is insecure. Chose a message M and call MAC oracle once to get $c=H(m)\oplus k$. Compute $h=H(M)$ and recover the key $k=c\oplus h$. For any message m, $MAC_k(m)=H(m)\oplus k$ where k is now known.\\
-(b) is insecure.
+(a) is insecure. Choose a message M and call MAC oracle once to get $c=H(m)\oplus k$. Compute $h=H(M)$ and recover the key $k=c\oplus h$. For any message m, $MAC_k(m)=H(m)\oplus k$ where k is now known.\\
 (c) is insecure. For a message m, call the MAC oracle to get $c=H(k,m)\oplus H(m)$. Then $H(k,m)=c\oplus H(m)$ Append a single 1 bit to the right of m followed by enough 0's to make the bit-length of the resulting message $m'$ multiple of 128. Let b be the 128-bit binary representation of the number of 128-bit blocks.
 One can compute the hash value of $(k,m'||b||y)$ for any message $y$ (assume $y$ has bit length $128t$) as
 \[
@@ -130,6 +131,7 @@ Thus, one can compute the tag for this new message $m'||b||y$
 \[
 MAC_k(m'||b||y)=H(k,m'||b||y)\oplus H(m'||b||y)
 \]
+(d) is insecure. By birthday attack we could find two messages $m_1,m_2$ of the same bitlength $128t$ (WLOG) that collide or $H(m_1)=H(m_2)$ within $2^{64}$ steps (which is feasible nowadays). Invoke the MACing oracle for the tag of $m_1||t$. Since $H(m_1||t,k)=H(m_2||t,k)$ the tag for $m_1||t$ is also a tag for $m_2||t$
 
 \newpage
 %*************************************************************************
@@ -140,15 +142,16 @@ should determine if there exists an integer $a \in \NN$ such that $n
 = a^5$.  ($\NN$ is the set of natural numbers.) Using big-O notation,
 give an upper bound on the number of bit operations your algorithm takes.
 \paragraph{Solution}
-(1) down=0, up=n. Compute $mid=\floor{\frac{down+up}{2}}$
+(1) down=0, up=n. Compute $mid=\floor{\frac{down+up}{2}}$\\
 (2) if $down == up$, Output FALSE;
     else if $mid^5 > n$, up=mid;
     else if $mid^5 < n$, down=mid;
     else Output TRUE.
     \\
-This algorithm takes at most $log_2n$ steps till it returns, so the running time is bounded by $\lceil log_2n \rceil+1$. For each step, to compute $mid^5$ one can compute $mid^2$, $mid^4$, $mid^5$. This requires 3 multiplications and additionally for each step the algorithm does at most 3 comparisons, one addition and one full division. So the total runnint time is (bitlength is t) $O((t+1)(3t+(3+2)t^2+t+t^2))$ which is polynomial.
+This algorithm takes at most $log_2n$ steps till it returns, so the running time is bounded by $\lceil log_2n \rceil+1$. For each step, to compute $mid^5$ one can compute $mid^2$, $mid^4$, $mid^5$. This requires 3 multiplications and additionally for each step the algorithm does at most 3 comparisons, one addition and one full division. So the total runnint time is (bitlength is t) $O((t+1)(3t+3t^2+t+t^2))$ which is polynomial.
 
 
+\newpage
 %*************************************************************************
 \item {\bf RSA computations} (10 marks)\\
 Alice chooses $n=1073$ and $e=715$ for use in the basic RSA public-key
@@ -163,17 +166,22 @@ show the main steps of your calculations. If you write a computer program,
 please hand in the program.)
 \paragraph{Solution}
 $1073=29\times 37\\
-\Phi(1073)=28\times 36=1008\\
-1008=715\times 1 + 293\\
-715=293\times 2+129\\
-293=129\times 2 +35\\
-129=35\times 3+24\\
-35=24\times 1+11\\
-24=11\times 2 + 2\\
-11=2\times 5 + 1\\
+\Phi(1073)=28\times 36=1008\\$
+By Extended Euclidean Algorithm (the right column works backward) \\
+$1008=715\times 1 + 293 \\
+715=293\times 2+129 \qquad 715\times (-134)+(1008-715)\times 327=1 \to 1008\times 327 -715\times 461 = 1 \\
+293=129\times 2 +35 \qquad 293\times 59 -(715-293\times 2)\times 134 =1 \to 715\times (-134)+ 293\times 327=1\\
+129=35\times 3+24 \qquad 129\times (-16) + (293-129\times 2)\times 59=1 \to 293\times 59 -129\times 134=1\\
+35=24\times 1+11 \qquad 35\times 11 - (129 -35 \times 3) \times =1 \to 129\times (-16)+ 35 \times 59=1\\
+24=11\times 2 + 2 \qquad (35-24)\times 11 -24\times 5 =1 \to 35\times 11 -24\times 16\\
+11=2\times 5 + 1 \qquad 11-(24-11\times 2 )\times 5=1 \to 11\times 11 -24\times 5 = 1\\
 5=1\times 5\\
-547\times 715=388\times 1008+1\\
-\text{Thus } 715\times 547 \equiv 1 \pmod{1008}$\\
+\text{Thus }
+715\times 461 = 1008\times 327 -1\\
+715\times 461 \equiv -1 \pmod{1008}\\
+715\times (-461) \equiv 1 \pmod{1008}\\
+715\times (1008-461) \equiv 1 \pmod{1008}\\
+715\times 547 \equiv 1 \pmod{1008}\\$
 (a)
 Therefore $547\times 715\equiv 1 \pmod{1008}$, 547 is the private key.
 \\

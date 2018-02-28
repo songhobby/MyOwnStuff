@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1519527851 "A3.tex" "A3.pdf" "A3" 1519527851
+["pdflatex"] 1519791399 "A3.tex" "A3.pdf" "A3" 1519791399
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1510784337 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1510784344 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1510784344 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -71,9 +71,9 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1510784374 32585 d82bbcf7626b7842c87671687479e852 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1516068852 2404736 6ca9e6023b4459829efec74926ef1c58 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1516068842 7736838 5a0d06527b7fa3c6470a321394ba732f ""
-  "A3.aux" 1519527851 350 e88a2e2128cad701651f6c9f90e7b386 ""
-  "A3.tex" 1519527850 11444 4be4f65a0e50db934e1407169121c7ed ""
+  "A3.aux" 1519791399 350 5dca1cea9514f6af507425816acaff18 ""
+  "A3.tex" 1519791398 12464 fa81dbcf6179b5ebea9a5e83f8976d47 ""
   (generated)
   "A3.pdf"
-  "A3.log"
   "A3.aux"
+  "A3.log"
