@@ -1,0 +1,261 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage{amsmath}
+
+\oddsidemargin -0.25in
+\textwidth 7.0in
+\topmargin 0.0in
+\headheight 0.0in
+\headsep 0.0in
+\topskip 0.0in
+\footskip 0.4in
+\textheight 8.8in
+
+\def\FF{{\Bbb F}}
+\def\EE{{\Bbb E}}
+\usepackage{amssymb}
+\newcommand{\ZZ}{{\mathbb Z}}
+\newcommand{\NN}{{\mathbb N}}
+\def\DES{{\textup{DES}}}
+\def\mod{{\textup{mod }}}
+\def\rank{{\textup{rank}}}
+\def\ord{{\textup{ord}}}
+\newcommand{\cat}{\mbox{$\, \| \,$}}
+\newcommand{\la}{\leftarrow}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+
+\usepackage{graphicx}  %for including .jpeg files
+
+\begin{document}
+
+\noindent
+{\large\bf CO 487/687: Assignment \#4} \hfill Due date: March 21 (Wednesday),
+11:00 am
+
+\hfill\hrule
+
+\vspace*{2mm}
+\noindent
+{\bf NOTE}: You will be emailed a Crowdmark link for submitting the
+assignment on March 12. If you do not receive the link, please
+send an email to ajmeneze@uwaterloo.ca.
+
+\begin{enumerate}
+
+%*************************************************************************
+\item {\bf Computing GCDs without long division} (15 marks) \\
+\begin{enumerate}
+\item Compute $\gcd(308,440)$ using GCDeasy. (Show the main steps of your
+work.)
+
+\paragraph{Solution}
+\begin{align*}
+&a,&&b,&&e\\
+&308,&&440,&&1\\
+&154,&&220,&&2\\
+&77,&&110,&&4\\
+&77,&&55,&&4\\
+&22,&&55,&&4\\
+&11,&&55,&&4\\
+&11,&&44,&&4\\
+&11,&&11,&&4\\
+&0,&&11,&&4\\
+\text{Output: } & d = 4\times 11 = 44
+\end{align*}
+\item Prove that GCDeasy \emph{terminates}.
+\paragraph{Solution}
+Since a and b are finite positive integers, The first loop always terminates when a and b run out of factor 2.
+For the second loop a and b are always greater than or equal to 0 as the division by 2 of a positive integer gives a positive integer and the subtraction of a larger number by a smaller number also gives non-negative interger results. Since for each loop, at least one of a and b decreases. So we have $a,b\geq 0$ and either a or b (at least one) decreases for each loop. This ensure a or b reachs 0 after finite number of loopings. Thus it always terminates.
+\item Prove that GCDeasy is \emph{correct} (that is, $d=\gcd(a,b)$). The
+      following result from Math~135 will be useful:
+      $\gcd(a,b)=\gcd(a,b-a)$ for all integers $a$, $b$.
+\paragraph{Solution}
+If a, b are even, let $a=2k_1,b=2k_2$ $GCD(a,b)=GCD(2k_1,2k_2)=2GCD(k_1,k_2)$ as 2 is a common divisor of a and b. So the first loop does not change the result with e updated every time doing the division by 2. \\
+After the first loop, 2 is not a common factor so we can divide them by 2 if they are even or $GCD(a,b) = GCD(a/2,b) \text{ or } GCD(a,b/2)$. Also, since $GCD(a,b)=GCD(a,a-b)$ (WLOG, $a\geq b$), the second loop gives the right result.
+
+
+\item Determine the running time of GCDeasy in bit operations.
+      The running time should be expressed in terms of $k$, where $k$
+      is the bitlength of the larger of $a$ and $b$. (Justify your answer.)\\
+      Hint: Consider the binary representations of $a$ and $b$.
+\paragraph{Solution}
+For the first while loop, the runtime is bounded by $O(k)$ if a and b are of some power of 2. For the second while loop,
+if either a or b is even, one division by 2 of that number is performed. Otherwise, subtraction of two odd numbers gives even number which is then divided by 2. Thus, in one iteration of the second loop, at least one division by 2 is performed. Thus the total number of the time loop 2 gets executed is $O(k)$. The total runtime is then $O(k(k+1) + k^2)$ where $k$ (left) is for the number of while loops through, $k$ (in the middle) is the subtraction and $1$ is the right shift operation to do the division by 2 and the comparison of two numbers, the $k^2$ to the right is the multiplication at the end. Therefore the total runtime is $O(k^2)$ bit operations.
+
+\item Is GCDeasy a polynomial-time algorithm? (Justify your answer.)
+\paragraph{Solution}
+Yes. As the runtime is $O(k^2)$ bit operations and k is the bit length of the larger number of a and b, 2 is a constant, this GCDeasy is a polynomial-time algorithm.
+\end{enumerate}
+\newpage
+
+%*************************************************************************
+\item {\bf Sharing a modulus in basic RSA encryption is a bad idea} (10
+marks)\\
+Suppose that Alice and Bob agree to select one pair of primes
+$p$ and $q$, and use the \emph{same} RSA modulus $n =pq$.
+Suppose that Alice and Bob choose different encryption exponents
+$e_a$ and $e_b$, respectively, such that $\gcd(e_a,e_b)=1$.
+Show that a \emph{passive} adversary can efficiently decrypt a message
+that is sent to both of them.\\
+That is, given $n$, $e_a$, $e_b$, $c_a = m^{e_a} \bmod{n}$ and
+$c_b = m^{e_b} \bmod{n}$, show how the adversary can efficiently
+compute $m$.\\
+(Hint: Recall from Math~135 that if $a$ and $b$ are integers with
+$\gcd(a,b)=d$, then there exist integers $x$ and $y$ such that
+$ax+by=d$. Such integers $x$ and $y$ can be efficiently computed using the
+extended Euclidean algorithm.)
+\paragraph{Solution}
+Using Extended Euclidean Algorithm, one can find $A,B$ in polynomial time that $Ae_a+Be_b=1$. I claim that the paintext $m$ is $c_a^A\cdot c_b^B$ as
+\begin{equation*}
+m=m^1=m^{Ae_a+Be_b}=m^{Ae_a}\cdot m^{Be_b}=(m^e_a)^A\cdot (m^e_b)^B=c_a^A \cdot c_b^B\\
+\end{equation*}
+\newpage
+
+%*************************************************************************
+\item {\bf Estimating the security level of RSA} (10 marks)\\
+Recall that the \emph{Number Field Sieve} (NFS) algorithm for factoring
+RSA moduli $n$ has running time
+\[
+O(e^{(1.923 + o(1)) (\log_e n)^{1/3} (\log_e \log_e n)^{2/3}})
+\mbox{ bit operations}.
+\]
+This running time expression can be simplified to
+\[
+e^{1.923 (\log_e n)^{1/3} (\log_e \log_e n)^{2/3}}
+\mbox{ bit operations}
+\]
+by ignoring the $o(1)$ term in the exponent and the hidden constant
+in the $O(\cdot )$ expression.
+\begin{enumerate}
+\item Using the simplified running time, estimate the security level
+of RSA when used with a 1024-bit modulus, a 2048-bit modulus,
+and a 3072-bit modulus. (Recall that a ``security level'' of $k$ bits
+means that the running time of the fastest attack known for solving
+a computational problem or breaking a cryptographic scheme has running
+time approximately $2^k$.)
+\paragraph{Solution}
+Once one knows the factorization of the modulus, the RSAP can be solved in polynomial time by Extended Euclideam Algorithm to find the private key given public key. Since the Factorization algorithm runs in sub-exponential, the runtime of EEA is polynomial and thus negligible. We only need to find the runtime of factorization of the modulus.
+\begin{align*}
+e^{1.923 (\log_e n)^{1/3} (\log_e \log_e n)^{2/3}} &= 2^k\\
+1.923 (t\log_e 2)^{1/3} (\log_e (t\log_e 2))^{2/3} \log_2e &= k
+\end{align*}
+Plug in $n=[2^{1024},2^{2048},2^{3072}]$, the corresponding $k$ is \begin{verbatim}
+[86.76614510070223, 116.88384811926787, 138.73632218673086]
+\end{verbatim}
+
+\item Suppose that a new integer factorization algorithm is
+discovered with running time
+\[
+e^{1.923 (\log_e n)^{1/4} (\log_e \log_e n)^{3/4}}
+\mbox{ bit operations}.
+\]
+Estimate the security level of RSA with a 1024-bit modulus, a 2048-bit
+modulus, and a 3072-bit modulus.
+\paragraph{Solution}
+\begin{align*}
+e^{1.923 (\log_e n)^{1/4} (\log_e \log_e n)^{2/4}} &= 2^k\\
+1.923 (t\log_e 2)^{1/4} (\log_e (t\log_e 2))^{3/4} \log_2e &= k
+\end{align*}
+Plug in $n=[2^{1024},2^{2048},2^{3072}]$, the corresponding $k$ is
+\begin{verbatim}
+[58.72988974298184, 75.30263257144873, 86.80382998467823]
+\end{verbatim}
+\item In light of the new integer factorization algorithm in (b), what
+should the bitlength of $n$ be in order to achieve a 128-bit security
+level?
+\paragraph{Solution}
+9588 bitlength is the minimum. The following is the python script
+\begin{verbatim}
+import math as m
+import numpy as np
+def f(t):
+    return 1.923*((t*m.log(2))**(1/4))*((m.log(t*m.log(2)))**(3/4))*m.log2(m.e)
+for t in range(1000,10000):
+    if f(t) > 128.0:
+        print(t,f(t))
+        break
+9588 128.00270266917417
+\end{verbatim}
+\newpage
+
+
+\end{enumerate}
+
+%*************************************************************************
+\item {\bf Examining an SSL/TLS certificate} (10 marks)\\
+Retrieve the following information from facebook.com's certificate:
+\begin{enumerate}
+\item Expiry date of facebook.com's certificate.\\
+March 22, 2019, 8:00:00 AM GMT-4
+\item Name of facebook.com's Intermediate CA (ICA).\\
+DigiCert SHA2 High Assurance Server CA
+\item Expiry date of the ICA's certificate.\\
+October 22, 2028, 8:00:00 AM GMT-4
+\item Name of facebook.com's Root CA (RCA).\\
+DigiCert High Assurance EV Root CA
+\item Expiry date of the RCA's certificate.\\
+November 9, 2031, 7:00:00 PM GMT-5
+\item Referring to ICA's Certification Practice Statement (CPS):
+\begin{enumerate}
+\item What is ICA's maximum validity period for usage of a Root CA Private Key?\\
+By its policy, 12 years as noted in page 46 in DigiCert Certificate Policy though the certificate term is 15 years
+\item What is ICA's maximum liability per transaction for an SSL/TLS
+certificate?\\
+1000
+\begin{verbatim}
+A MAXIMUM LIABILITY OF $1,000 PER TRANSACTION FOR SSL/TLS
+SERVER CERTIFICATES,
+\end{verbatim}
+
+\item What is ICA's aggregate maximum liability for all claims related
+to a single certificate or service?
+10000
+\begin{verbatim}
+AN AGGREGATE MAXIMUM LIABILITY OF $10,000 FOR ALL CLAIMS RELATED
+TO A SINGLE CERTIFICATE OR SERVICE
+\end{verbatim}
+\end{enumerate}
+\end{enumerate}
+
+\end{enumerate}
+
+
+\hfill\hrule
+
+\vspace*{2mm}
+\noindent
+You should make an effort to solve all the problems on your own.
+You are also welcome to collaborate on assignments with other students
+presently enrolled in CO~487/687. However, \emph{solutions must be
+written up by yourself}. If you do collaborate, please \emph{acknowledge
+your collaborators} in the write-up for each problem. \emph{If you
+obtain a solution with help from a book, research paper, a web site,
+or elsewhere, please acknowledge your source}. You are \emph{not}
+permitted to solicit help from online bulletin boards, chat groups,
+newsgroups, or solutions from previous offerings of the course.
+
+\vspace*{2mm}
+\noindent
+The assignment should be submitted via Crowdmark before {\bf 11:00 am
+on March~21}. Late assignments will not be accepted except in
+\emph{very} special circumstances (usually a documented illness of
+a serious nature). A high workload because of midterm tests and assignments
+in other courses will \emph{not} qualify as a special circumstance.
+
+\vspace*{4mm}
+\noindent
+{\bf Instructor and TA office hours}:
+\begin{tabbing}
+Monday:~~~~~~~\=1:00 pm -- 2:00 pm~~~~~~~~\= Alessandra Graf (MC 5029)\\
+\> 3:00 pm -- 5:30 pm \> Alfred Menezes (MC 5026)\\
+Tuesday: \> 10:30 am -- 11:30 am \> Priya Soundararajan (MC 5466)\\
+\> 11:30 am -- 12:30 pm \> Sam Jaques (QNC 4114)\\
+\> 1:00 pm -- 2:00 pm \> Luis Ruiz-Lopez (MC 5486)\\
+\> 3:00 pm -- 4:00 pm \> Elena Bakos Lang (MC 5474)\\
+Thursday: \> 2:00 pm -- 3:00 pm \> Chris Leonardi (MC 5494)\\
+Friday: \> 1:00 pm -- 3:00 pm \> Alfred Menezes (MC 5026)
+\end{tabbing}
+
+\hfill\hrule
+
+\end{document}

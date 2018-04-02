@@ -1,0 +1,174 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+
+\oddsidemargin -0.25in
+\textwidth 7.0in
+\topmargin 0.0in
+\headheight 0.0in
+\headsep 0.0in
+\topskip 0.0in
+\footskip 0.4in
+\textheight 8.8in
+
+\def\FF{{\Bbb F}}
+\def\EE{{\Bbb E}}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{amsmath}
+\newcommand{\ZZ}{{\mathbb Z}}
+\newcommand{\NN}{{\mathbb N}}
+\def\DES{{\textup{DES}}}
+\def\mod{{\textup{mod }}}
+\def\rank{{\textup{rank}}}
+\def\ord{{\textup{ord}}}
+\newcommand{\cat}{\mbox{$\, \| \,$}}
+\newcommand{\la}{\leftarrow}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+
+\begin{document}
+
+\noindent
+{\large\bf CO 487/687: Assignment \#5} \hfill Due date: April 4 (Wednesday),
+11:59 pm
+
+\hfill\hrule
+
+\vspace*{2mm}
+\noindent
+{\bf NOTE}: You will be emailed a Crowdmark link for submitting the
+assignment on March 23. If you do not receive the link, please
+send an email to ajmeneze@uwaterloo.ca.
+
+\begin{enumerate}
+
+%*************************************************************************
+\item {\bf Elliptic curve computations} (10 marks)\\
+Consider the elliptic curve $E \; : \; Y^2 = X^3 + 10X + 16$ defined over
+$\ZZ_{17}$.
+\begin{enumerate}
+\item Find $E(\ZZ_{17})$, the set of $\ZZ_{17}$-rational points on $E$.
+\paragraph{Solution, all the '=' sign are modulo by 17}
+$0^2=0, 1^2=1, 2^2=4, 3^2=9,4^2=16,5^2=8, 6^2=2, 7^2=15,8^2=13,9^2=13,10^2=15,11^2=2, 12^2=8, 13^2=16, 14^2=9, 15^2=4, 16^2=1$\\
+Let $x=0, y^2= 16, y=\pm 4=4, 13$ The same for $x=1,2,3,\dots 16$
+All the rational points are $\{ \infty, (0,4),(0,13),(4,1),(4,16),(5,2),(5,15) (7,2),(7,15),(8,8),(8,9),(9,6),(9,11) \}$
+\item What is $\# E(\ZZ_{17})$? (Check: $\# E(\ZZ_{17})$ is prime.)
+\paragraph{Solution} Its 13 and its a prime.
+\item Find a generator of $E(\ZZ_{17})$.
+\paragraph{Solution}
+Any point except $\infty$ is a generator as the $\# E(\ZZ_{17})$ is prime.
+
+
+
+\item Let $P = (5,2)$, $Q=(9,11)$, $R=(9,6) \in E(\ZZ_{17})$.
+      Compute the following points:\\
+      (i) $P+Q$.~~~ \\
+      $\lambda = \frac{11-2}{9-5}=9\cdot 4^{-1}=9\cdot 13 = -2$\\
+      $x=(-2)^2 - 9-5=7, y=-((-2)\cdot (7-5)+2) = 2$, Thus, $P+Q=
+      (7,2)$\\
+      (ii) $Q+R$.~~~ \\
+      $\infty$\\
+      (iii) $2R$.~~~ \\
+      (8,8)\\
+      (iv) $2018R$. \\
+      $2018R= (2018 \bmod 13)R=3R=(4,1)$\\
+\item Determine $\log_P R$.
+\paragraph{Solution} $2P=(7,15),3P=(9,6)$ Thus, $\log_P R = 3$
+\end{enumerate}
+
+\newpage
+%*************************************************************************
+\item {\bf Point multiplication} (10 marks)\\
+Let $E : Y^2 = X^3 + aX + b$ be an elliptic curve defined over $\ZZ_p$.
+Let $n = \# E(\ZZ_p)$, and suppose that $n$ is prime. Design and analyze
+a \emph{polynomial-time} algorithm (repeated double-and-add) which, on input
+$p$, $a$, $b$, $n$, $P \in E(\ZZ_p)$ and $m \in [1,n-1]$, outputs $mP$.
+\paragraph{Solution}
+Write $m$ in binary representation as $m_i, i = 0,1,2,\dots, \floor{\log m}$\\
+\begin{algorithm}
+$X=P, Q=\infty$\\
+For i from 0 to $\floor{\log m}$ \\
+\indent $Q\leftarrow m_iX+Q$\\
+\indent $X\leftarrow 2X$\\
+Output Q\\
+
+%*************************************************************************
+\item {\bf Elliptic curve signature scheme} (10 marks)\\
+Let $p$ be a prime, and let $E$ be an elliptic curve defined over $\ZZ_p$
+with $\# E(\ZZ_p) = n$ (a prime). Let $P$ be a generator of $E(\ZZ_p)$,
+and let $H$ be a cryptographic hash function. Alice
+selects a private key $a \in_R [1,n-1]$, and computes her public key
+$A = aP$. She signs a message $m \in \{0,1\}^*$ as follows:
+\begin{itemize}
+\itemsep 0mm
+\item[i)] Select $k \in_R [1,n-1]$ and compute $R = kP$.
+\item[ii)] Compute $e = H(m,R)$.
+\item[iii)] Compute $s = (ae+k) \bmod{n}$.
+\item[iv)] Alice's signature on $m$ is $(s,e)$.
+\end{itemize}
+
+\begin{enumerate}
+\item Describe a reasonable procedure for verifying Alice's signature
+      $(s,e)$ on a message $m$. Justify the \emph{correctness} of your
+      verification algorithm. (You do not have to justify the \emph{security}
+      of the signature scheme.)
+\item Suppose that Alice uses the same $k$ to sign two different messages
+      $m_1$ and $m_2$. Show how an adversary who knows these messages and
+      their signatures can efficiently (and with high probability) determine
+      Alice's private key.
+\end{enumerate}
+
+%*************************************************************************
+\item {\bf Elliptic curve hash function} (10 marks)\\
+Let $p$ be a 256-bit prime, and let $E$ be an elliptic
+curve defined over $\ZZ_p$ with $\# E(\ZZ_p)=n$ a prime.
+Let $P, Q \in_R E(\ZZ_p)$ be points, neither of which is the point at
+infinity. Define the function $H : [0,n-1] \times [0,n-1] \longrightarrow
+E(\ZZ_p)$ by $H((a,b)) = aP+bQ$. That is, messages are
+pairs $(a,b)$ of integers in the interval $[0,n-1]$, and the
+hash of such a message is the elliptic curve point $aP+bQ$.
+Prove, under a reasonable computational assumption, that $H$ is collision
+resistant.
+
+\end{enumerate}
+
+
+\hfill\hrule
+
+\newpage
+\vspace*{2mm}
+\noindent
+You should make an effort to solve all the problems on your own.
+You are also welcome to collaborate on assignments with other students
+presently enrolled in CO~487/687. However, \emph{solutions must be
+written up by yourself}. If you do collaborate, please \emph{acknowledge
+your collaborators} in the write-up for each problem. \emph{If you
+obtain a solution with help from a book, research paper, a web site,
+or elsewhere, please acknowledge your source}. You are \emph{not}
+permitted to solicit help from online bulletin boards, chat groups,
+newsgroups, or solutions from previous offerings of the course.
+
+\vspace*{2mm}
+\noindent
+The assignment should be submitted via Crowdmark before {\bf 11:59 pm
+on April~4}. Late assignments will not be accepted except in
+\emph{very} special circumstances (usually a documented illness of
+a serious nature). A high workload because of midterm tests and assignments
+in other courses will \emph{not} qualify as a special circumstance.
+
+\vspace*{4mm}
+\noindent
+{\bf Instructor and TA office hours}:
+\begin{tabbing}
+Monday:~~~~~~~\=1:00 pm -- 2:00 pm~~~~~~~~\= Alessandra Graf (MC 5029)\\
+\> 3:00 pm -- 5:30 pm \> Alfred Menezes (MC 5026)\\
+Tuesday: \> 10:30 am -- 11:30 am \> Priya Soundararajan (MC 5466)\\
+\> 11:30 am -- 12:30 pm \> Sam Jaques (QNC 4114)\\
+\> 1:00 pm -- 2:00 pm \> Luis Ruiz-Lopez (MC 5486)\\
+\> 3:00 pm -- 4:00 pm \> Elena Bakos Lang (MC 5474)\\
+Thursday: \> 2:00 pm -- 3:00 pm \> Chris Leonardi (MC 5494)\\
+Friday: \> 1:00 pm -- 3:00 pm \> Alfred Menezes (MC 5026)
+\end{tabbing}
+
+\hfill\hrule
+
+\end{document}
