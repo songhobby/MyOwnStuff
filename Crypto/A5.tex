@@ -14,6 +14,7 @@
 \def\EE{{\Bbb E}}
 \usepackage{amssymb}
 \usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{amsmath}
 \newcommand{\ZZ}{{\mathbb Z}}
 \newcommand{\NN}{{\mathbb N}}
@@ -85,13 +86,20 @@ $p$, $a$, $b$, $n$, $P \in E(\ZZ_p)$ and $m \in [1,n-1]$, outputs $mP$.
 \paragraph{Solution}
 Write $m$ in binary representation as $m_i, i = 0,1,2,\dots, \floor{\log m}$\\
 \begin{algorithm}
-$X=P, Q=\infty$\\
-For i from 0 to $\floor{\log m}$ \\
-\indent $Q\leftarrow m_iX+Q$\\
-\indent $X\leftarrow 2X$\\
-Output Q\\
+\caption{Double and Add}
+\begin{algorithmic}[1]
+\State $X \gets P, Q \gets \infty$
+\For {i from 0 to $\floor{\log m}$}
+\State $Q \gets m_iX+Q$ \label{1}
+\State $X \gets 2X$ \label{2}
+\EndFor
+\State \textbf{Output} Q
+\end{algorithmic}
+\end{algorithm}
+\paragraph{Analysis} The For loop gets executed $\floor{\log m}$ times and each loop only contains constant computation, namely line \ref{1} and \ref{2}. So the total runtime is $O(\floor{\log m} \cdot Constant) \sim O(\log m)$ which is polynomial in terms of the length of m.
 
 %*************************************************************************
+\newpage
 \item {\bf Elliptic curve signature scheme} (10 marks)\\
 Let $p$ be a prime, and let $E$ be an elliptic curve defined over $\ZZ_p$
 with $\# E(\ZZ_p) = n$ (a prime). Let $P$ be a generator of $E(\ZZ_p)$,
@@ -111,13 +119,29 @@ $A = aP$. She signs a message $m \in \{0,1\}^*$ as follows:
       $(s,e)$ on a message $m$. Justify the \emph{correctness} of your
       verification algorithm. (You do not have to justify the \emph{security}
       of the signature scheme.)
+      \paragraph{Solution}
+      Compute $R'=sP-eA, e' = H(m, R')$. If $e'=e$ ACCEPT, otherwise REJECT.\\
+      \[
+      H(m, R')=H(m, sP-eA) = H(m, (s-ea)P) = H(m, kP) = H(m, R) = e
+      \]
 \item Suppose that Alice uses the same $k$ to sign two different messages
       $m_1$ and $m_2$. Show how an adversary who knows these messages and
       their signatures can efficiently (and with high probability) determine
       Alice's private key.
+      \paragraph{Solution}
+      Since $R=(s-ea)P=sP-eA$, for two message signature pairs with the same $k$, $s_1P-e_1A =R_1=kP=R_2=s_2P-e_2A$
+      \[
+      s_1P-e_1A =(s_1-e_1a)P = (s_2-e_2a)P=s_2P-e_2A
+      \]
+      We have $s_1-e_1a = s_2-e_2a$ as $P$ is a generator so k is unique.
+      \[
+      a = (s_1-s_2)(e_1-e_2)^{-1}
+      \]
+      As long as $e_1$ and $e_2$ are different (Since p is a prime, the inverse of $(e_1-e_2)$ always exists as long as they are not equal), anyone can compute the private key. Assume H is collision resistant, then with high probability $e_1\neq e_2$ as otherwise one could've found a collision $(m_1, R), (m_2, R)$.
 \end{enumerate}
 
 %*************************************************************************
+\newpage
 \item {\bf Elliptic curve hash function} (10 marks)\\
 Let $p$ be a 256-bit prime, and let $E$ be an elliptic
 curve defined over $\ZZ_p$ with $\# E(\ZZ_p)=n$ a prime.
@@ -128,6 +152,15 @@ pairs $(a,b)$ of integers in the interval $[0,n-1]$, and the
 hash of such a message is the elliptic curve point $aP+bQ$.
 Prove, under a reasonable computational assumption, that $H$ is collision
 resistant.
+\paragraph{Solution} Assume DL in Elliptic Curve is computationally infeasible, H is collision-resistant. Suppose H is not collision-resistant. Then one can efficiently finds $(a_1,b_1), (a_2,b_2)$ with either $a_1 \neq a_2$ or $b_2 \neq b_2$ as otherwise the plaintext would be the same.
+\[
+a_1P+b_1Q = a_2P+b_2Q
+\]
+WLOG, $a_1\neq a_2$.
+\[ P=(a_1-a_2)^{-1}(b_2-b_1)Q
+\]
+So one can compute $\log_P Q = (a_1-a_2)^{-1}(b_2-b_1)$
+
 
 \end{enumerate}
 
