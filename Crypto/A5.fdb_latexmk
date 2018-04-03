@@ -35,7 +35,7 @@
   "A5.aux"
   "A5.log"
   "A5.dvi"
-["pdflatex"] 1522715570 "A5.tex" "A5.pdf" "A5" 1522715571
+["pdflatex"] 1522786762 "A5.tex" "A5.pdf" "A5" 1522786762
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1520157216 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1520157226 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1520157226 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -63,6 +63,7 @@
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1520157213 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1520157213 35469 70d41d2b9ea31d5d813066df7c99281c ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1520157213 35752 024fb6c41858982481f6968b5fc26508 ""
+  "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1520157213 32734 69e00a6b65cedb993666e42eedb3d48f ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1520157213 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb" 1520157213 33993 9b89b85fd2d9df0482bd47194d1d3bf3 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1520157213 32569 5e5ddc8df908dea60932f3c484a54c0d ""
@@ -88,8 +89,8 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1520157258 32585 d82bbcf7626b7842c87671687479e852 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1521082507 2570953 760b5bb0cbd280885d9f95318df536c1 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1521082499 7738161 391d31a1b3dfc1bbff33cd0a8d2a4e9f ""
-  "A5.aux" 1522715571 692 97ff5600c184f4c306afbd39515460a9 ""
-  "A5.tex" 1522715570 8256 de857139065748e6ff60d197300a5abb ""
+  "A5.aux" 1522786762 692 97ff5600c184f4c306afbd39515460a9 ""
+  "A5.tex" 1522786761 8418 a0b8824f161e968b3b22bb51c072a9ac ""
   (generated)
   "A5.log"
   "A5.aux"

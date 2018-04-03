@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2018.3.14)  2 APR 2018 20:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2018.3.14)  3 APR 2018 16:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -154,14 +154,14 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 47.
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 63--75
+Underfull \hbox (badness 10000) in paragraph at lines 63--78
 
  []
 
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
-Underfull \hbox (badness 10000) in paragraph at lines 123--124
+Underfull \hbox (badness 10000) in paragraph at lines 126--127
 
  []
 
@@ -169,25 +169,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 123--124
 Here is how much of TeX's memory you used:
  1751 strings out of 492982
  20927 string characters out of 6138579
- 78698 words of memory out of 5000000
+ 79698 words of memory out of 5000000
  5338 multiletter control sequences out of 15000+600000
  9846 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 27i,6n,26p,325b,368s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 27i,6n,26p,326b,368s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/c
 mbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
 r/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-
 dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type
 1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb><
-/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmti10.pfb></usr/share/texmf-dist/fonts/type1/public/am
-sfonts/symbols/msbm10.pfb>
-Output written on A5.pdf (5 pages, 132407 bytes).
+ts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><
+/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmti10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/m
+sbm10.pfb>
+Output written on A5.pdf (5 pages, 140327 bytes).
 PDF statistics:
- 64 PDF objects out of 1000 (max. 8388607)
- 45 compressed objects within 1 object stream
+ 68 PDF objects out of 1000 (max. 8388607)
+ 48 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

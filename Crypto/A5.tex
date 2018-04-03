@@ -67,9 +67,12 @@ Any point except $\infty$ is a generator as the $\# E(\ZZ_{17})$ is prime.
       $x=(-2)^2 - 9-5=7, y=-((-2)\cdot (7-5)+2) = 2$, Thus, $P+Q=
       (7,2)$\\
       (ii) $Q+R$.~~~ \\
-      $\infty$\\
+      Since $Q=-R$, $Q+R=\infty$\\
       (iii) $2R$.~~~ \\
-      (8,8)\\
+      $\lambda = \frac{3\cdot 9^2+10}{6\cdot 2}=(-2)\cdot 10=-3$\\
+      $x=(-3)^2-9\cdot2 = 8\\
+      y=-((-3)\cdot (8-9)+6)=8\\
+      2R=(8,8)$\\
       (iv) $2018R$. \\
       $2018R= (2018 \bmod 13)R=3R=(4,1)$\\
 \item Determine $\log_P R$.
@@ -152,7 +155,7 @@ pairs $(a,b)$ of integers in the interval $[0,n-1]$, and the
 hash of such a message is the elliptic curve point $aP+bQ$.
 Prove, under a reasonable computational assumption, that $H$ is collision
 resistant.
-\paragraph{Solution} Assume DL in Elliptic Curve is computationally infeasible, H is collision-resistant. Suppose H is not collision-resistant. Then one can efficiently finds $(a_1,b_1), (a_2,b_2)$ with either $a_1 \neq a_2$ or $b_2 \neq b_2$ as otherwise the plaintext would be the same.
+\paragraph{Solution} Assume DL in Elliptic Curve is computationally infeasible, H is collision-resistant. Suppose H is not collision-resistant. Then one can efficiently finds $(a_1,b_1), (a_2,b_2)$ with either $a_1 \neq a_2$ or $b_2 \neq b_2$ as otherwise the plaintext would be the same, such that
 \[
 a_1P+b_1Q = a_2P+b_2Q
 \]
